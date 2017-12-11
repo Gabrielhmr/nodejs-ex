@@ -1,8 +1,18 @@
 //  OpenShift sample Node application
+
+
 var express = require('express'),
     app     = express(),
     morgan  = require('morgan');
-    
+
+const paypal = require('paypal-rest-sdk');
+
+paypal.configure({
+  'mode': 'sandbox', //sandbox or live
+  'client_id': 'Af2OTrdO8DP8x2A8-YZopy0xP5HQI6xlEecebvvg1ZpYePXrxKKwp0q80gpKobEqdbR35h7TZ26SJL-X',
+  'client_secret': 'EBQkDl0ZhDBxaMdeBgdX_ncVTchUR2aEDXRseDV-usKiKaiOSqb6RM_d7w4Tve1aYJuEN5mrC_GgC1N3'
+});
+
 Object.assign=require('object-assign')
 
 app.engine('html', require('ejs').renderFile);
@@ -75,6 +85,48 @@ app.get('/', function (req, res) {
   } else {
     res.render('index.html', { pageCountMessage : null});
   }
+});
+
+app.get('/pay',(req, res) => {
+  var create_payment_json = {
+    "intent": "sale",
+    "payer": {
+        "payment_method": "paypal"
+    },
+    "redirect_urls": {
+        "return_url": "http://antecip-56286.firebaseapp.com/success",
+        "cancel_url": "http://antecip-56286.firebaseapp.com/cancel"
+    },
+    "transactions": [{
+        "item_list": {
+            "items": [{
+                "name": "pacote prata",
+                "sku": "20 encaixes",
+                "price": "30.00",
+                "currency": "BRL",
+                "quantity": 1
+            }]
+        },
+        "amount": {
+            "currency": "BRL",
+            "total": "30.00"
+        },
+        "description": "This is the payment description for encaixes."
+    }]
+};
+
+paypal.payment.create(create_payment_json, function (error, payment) {
+    if (error) {
+        throw error;
+    } else {
+        console.log("Create Payment Response");
+        console.log(payment);
+         response.send("Paypal com firebase");
+    }
+});
+
+
+
 });
 
 app.get('/pagecount', function (req, res) {
