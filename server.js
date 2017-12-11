@@ -5,7 +5,7 @@ var express = require('express'),
     app     = express(),
     morgan  = require('morgan');
 
-const paypal = require('paypal-rest-sdk');
+var paypal = require('paypal-rest-sdk');
 
 paypal.configure({
   'mode': 'sandbox', //sandbox or live
