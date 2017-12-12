@@ -119,6 +119,12 @@ app.get('/pay',(req, res) => {
       client.execute(request).then((response) => {
         console.log(response.statusCode);
         console.log(response.result);
+        let payment = response.result;
+        for (let i = 0; i < payment.links.length; i++) {
+          if (payment.links[i].rel === 'approval_url') {
+            response.redirect(payment.links[i].href);
+          }
+        }
       }).catch((error) => {
         console.error(error.statusCode);
         console.error(error.message);
