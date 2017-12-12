@@ -5,13 +5,11 @@ var express = require('express'),
     app     = express(),
     morgan  = require('morgan');
 
-var paypal = require('paypal-rest-sdk');
+const paypal = require('paypal-rest-sdk');
 
-paypal.configure({
-  'mode': 'sandbox', //sandbox or live
-  'client_id': 'Af2OTrdO8DP8x2A8-YZopy0xP5HQI6xlEecebvvg1ZpYePXrxKKwp0q80gpKobEqdbR35h7TZ26SJL-X',
-  'client_secret': 'EBQkDl0ZhDBxaMdeBgdX_ncVTchUR2aEDXRseDV-usKiKaiOSqb6RM_d7w4Tve1aYJuEN5mrC_GgC1N3'
-});
+
+let env = new paypal.SandboxEnvironment('Af2OTrdO8DP8x2A8-YZopy0xP5HQI6xlEecebvvg1ZpYePXrxKKwp0q80gpKobEqdbR35h7TZ26SJL-X', 'EBQkDl0ZhDBxaMdeBgdX_ncVTchUR2aEDXRseDV-usKiKaiOSqb6RM_d7w4Tve1aYJuEN5mrC_GgC1N3');
+let client = new paypal.PayPalHttpClient(env);
 
 Object.assign=require('object-assign')
 
@@ -115,15 +113,16 @@ app.get('/pay',(req, res) => {
     }]
 };
 
-paypal.payment.create(create_payment_json, function (error, payment) {
-    if (error) {
-        throw error;
-    } else {
-        console.log("Create Payment Response");
-        console.log(payment);
-         response.send("Paypal com firebase");
-    }
-});
+      let request = new paypal.PaymentCreateRequest();
+      request.requestBody(create_payment_json);
+
+      client.execute(request).then((response) => {
+        console.log(response.statusCode);
+        console.log(response.result);
+      }).catch((error) => {
+        console.error(error.statusCode);
+        console.error(error.message);
+      });
 
 
 
