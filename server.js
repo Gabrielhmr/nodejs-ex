@@ -92,7 +92,7 @@ app.get('/pay',(req, res) => {
         "payment_method": "paypal"
     },
     "redirect_urls": {
-        "return_url": "http://antecip-56286.firebaseapp.com/success",
+        "return_url": "http://antecipay-antecipay.193b.starter-ca-central-1.openshiftapps.com/success",
         "cancel_url": "http://antecip-56286.firebaseapp.com/cancel"
     },
     "transactions": [{
@@ -125,6 +125,7 @@ app.get('/pay',(req, res) => {
             res.redirect(payment.links[i].href);
           }
         }
+
       }).catch((error) => {
         console.error(error.statusCode);
         console.error(error.message);
@@ -133,6 +134,30 @@ app.get('/pay',(req, res) => {
 
 
 });
+
+app.get('/success', function (req, res) {
+  const payerId = req.query.PayerId;
+  const paymentId = req.query.paymentId;
+
+  let request = new PaymentExecuteRequest(paymentId);
+  request.requestBody(payerId);
+
+  client.execute(request).then((r) => {
+    console.log(req.body);
+    console.log("================");
+    console.log(r);
+    res.send('success');
+
+  }).catch((error) => {
+    console.error(error);
+  });
+
+
+
+
+
+});
+
 
 app.get('/pagecount', function (req, res) {
   // try to initialize the db on every request if it's not already
