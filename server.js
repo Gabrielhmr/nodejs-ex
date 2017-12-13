@@ -137,7 +137,9 @@ app.get('/pay',(req, res) => {
 
 app.get('/success', function (req, res) {
   const payerId = req.query.PayerId;
+  console.log(payerId);
   const paymentId = req.query.paymentId;
+  console.log(paymentId); 
 
   let request = new paypal.PaymentExecuteRequest(paymentId);
   request.requestBody(payerId);
