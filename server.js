@@ -135,7 +135,7 @@ app.get('/pay',(req, res) => {
 
 });
 
-app.get('/success', function (req, res) {
+app.post('/success', function (req, res) {
   const payerId = req.query.PayerID;
   console.log(payerId);
   const paymentId = req.query.paymentId;
