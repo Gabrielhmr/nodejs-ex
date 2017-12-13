@@ -139,10 +139,12 @@ app.get('/success', function (req, res) {
   const payerId = req.query.PayerID;
   console.log(payerId);
   const paymentId = req.query.paymentId;
-  console.log(paymentId); 
+  console.log(paymentId);
 
   let request = new paypal.PaymentExecuteRequest(paymentId);
   request.requestBody(payerId);
+
+  console.log(request);
 
   client.execute(request).then((r) => {
     console.log(req.body);
@@ -151,6 +153,7 @@ app.get('/success', function (req, res) {
     res.send('success');
 
   }).catch((error) => {
+    console.log("-----------------");
     console.error(error);
   });
 
