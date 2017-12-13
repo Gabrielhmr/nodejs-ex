@@ -119,12 +119,22 @@ app.get('/pay',(req, res) => {
       client.execute(request).then((response) => {
         console.log(response.statusCode);
         console.log(response.result);
-        let payment = response.result;
-        for (let i = 0; i < payment.links.length; i++) {
-          if (payment.links[i].rel === 'approval_url') {
-            res.redirect(payment.links[i].href);
-          }
-        }
+        // let payment = response.result;
+        // for (let i = 0; i < payment.links.length; i++) {
+        //   if (payment.links[i].rel === 'approval_url') {
+        //     res.redirect(payment.links[i].href);
+        //   }
+        // }
+
+        let request = new paypal.PaymentExecuteRequest(response.result.id);
+         request.requestBody({ payer_id: '773CLZQAR8XME'});
+
+         client.execute(request).then((r) => {
+         console.log("relly");
+       }).catch((error) => {
+         console.log(error.message);
+       });
+
 
       }).catch((error) => {
         console.error(error.statusCode);
@@ -135,33 +145,33 @@ app.get('/pay',(req, res) => {
 
 });
 
-app.post('/success', function (req, res) {
-  const payerId = req.query.PayerID;
-  console.log(payerId);
-  const paymentId = req.query.paymentId;
-  console.log(paymentId);
-
-  let request = new paypal.PaymentExecuteRequest(paymentId);
-  request.requestBody(payerId);
-
-  console.log(request);
-
-  client.execute(request).then((r) => {
-    console.log(req.body);
-    console.log("================");
-    console.log(r);
-    res.send('success');
-
-  }).catch((error) => {
-    console.log("-----------------");
-    console.error(error);
-  });
-
-
-
-
-
-});
+// app.post('/success', function (req, res) {
+//   const payerId = req.query.PayerID;
+//   console.log(payerId);
+//   const paymentId = req.query.paymentId;
+//   console.log(paymentId);
+//
+//   let request = new paypal.PaymentExecuteRequest(paymentId);
+//   request.requestBody(payerId);
+//
+//   console.log(request);
+//
+//   client.execute(request).then((r) => {
+//     console.log(req.body);
+//     console.log("================");
+//     console.log(r);
+//     res.send('success');
+//
+//   }).catch((error) => {
+//     console.log("-----------------");
+//     console.error(error);
+//   });
+//
+//
+//
+//
+//
+// });
 
 
 app.get('/pagecount', function (req, res) {
