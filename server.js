@@ -126,16 +126,6 @@ app.get('/pay',(req, res) => {
           }
         }
 
-       //  let request = new paypal.PaymentExecuteRequest(response.result.id);
-       //   request.requestBody({ payer_id: '773CLZQAR8XME'});
-       //
-       //   client.execute(request).then((r) => {
-       //   console.log("relly");
-       // }).catch((error) => {
-       //   console.log(error.message);
-       // });
-
-
       }).catch((error) => {
         console.error(error.statusCode);
         console.error(error.message);
@@ -147,29 +137,17 @@ app.get('/pay',(req, res) => {
 
 app.get('/success', function (req, res) {
   const payerId = req.query.PayerID;
-  console.log(payerId);
   const paymentId = req.query.paymentId;
-  console.log(paymentId);
 
   let request = new paypal.PaymentExecuteRequest(paymentId);
   request.requestBody({ payer_id: payerId});
 
-  console.log(request);
-
   client.execute(request).then((r) => {
-    console.log(req.body);
-    console.log("================");
-    console.log(r);
     res.send('success');
 
   }).catch((error) => {
-    console.log("-----------------");
     console.error(error);
   });
-
-
-
-
 
 });
 
