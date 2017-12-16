@@ -5,8 +5,8 @@ var express = require('express'),
     app     = express(),
     morgan  = require('morgan');
 
-var cors = require('cors')
-app.use(cors({origin: 'http://localhost:4200'}));
+var cors = require('cors');
+app.use(cors());
 
 const paypal = require('paypal-rest-sdk');
 
@@ -88,7 +88,7 @@ app.get('/', function (req, res) {
   }
 });
 
-app.post('/pay',(req, res) => {
+app.post('/pay',(req, res, next) => {
   console.log(req);
   var create_payment_json = {
     "intent": "sale",
