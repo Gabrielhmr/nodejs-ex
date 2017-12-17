@@ -96,7 +96,7 @@ app.get('/', function (req, res) {
   }
 });
 
-app.post('/pay',(req, res) => {
+app.post('/pay',(req, res, next) => {
   console.log(req);
   var create_payment_json = {
     "intent": "sale",
@@ -134,7 +134,7 @@ app.post('/pay',(req, res) => {
         let payment = response.result;
         for (let i = 0; i < payment.links.length; i++) {
           if (payment.links[i].rel === 'approval_url') {
-            res.redirect(payment.links[i].href);
+            res.send(payment.links[i].href);
           }
         }
 
