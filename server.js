@@ -96,7 +96,7 @@ app.get('/', function (req, res) {
   }
 });
 
-app.post('/pay',(req, res, next) => {
+app.post('/pay',(req, res) => {
   console.log(req);
   var create_payment_json = {
     "intent": "sale",
