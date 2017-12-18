@@ -110,16 +110,16 @@ app.post('/pay',(req, res, next) => {
     "transactions": [{
         "item_list": {
             "items": [{
-                "name": "pacote prata",
-                "sku": "20 encaixes",
-                "price": "30.00",
+                "name": req.body.pacote,
+                "sku": req.body.encaixes,
+                "price": req.body.preco,
                 "currency": "BRL",
                 "quantity": 1
             }]
         },
         "amount": {
             "currency": "BRL",
-            "total": "30.00"
+            "total": req.body.preco
         },
         "description": "This is the payment description for encaixes."
     }]
