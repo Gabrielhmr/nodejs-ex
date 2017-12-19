@@ -155,7 +155,7 @@ app.get('/success', function (req, res) {
   request.requestBody({ payer_id: payerId});
 
   client.execute(request).then((r) => {
-    res.send('success');
+    res.redirect("http://localhost:4200/#/pages/pagamentos");
 
   }).catch((error) => {
     console.error(error);
